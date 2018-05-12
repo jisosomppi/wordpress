@@ -9,6 +9,14 @@ permalink: >
 published: true
 post_date: 2018-05-12 11:39:23
 ---
+[contact-form][contact-field label="Name" type="name"  required="true" /][contact-field label="Email" type="email" required="true" /][contact-field label="Website" type="url" /][contact-field label="Message" type="textarea" /][/contact-form]
+
+[contact-form][contact-field label="Name" type="name"  required="true" /][contact-field label="Email" type="email" required="true" /][contact-field label="Website" type="url" /][contact-field label="Message" type="textarea" /][/contact-form]
+
+Testing wp-&gt; git
+
+&nbsp;
+
 # OpenStack-pohjainen pilvitallennusratkaisu
 **Projektimme on osa Haaga-Helian Pilviteknologiat-kurssia keväällä 2018**
 
