@@ -1,9 +1,14 @@
 ---
-post_title: 'OpenStackin käyttöönotto'
+ID: 487
+post_title: OpenStackin käyttöönotto
+author: jussi
+post_excerpt: ""
 layout: post
+permalink: >
+  http://jisosomppi.me/2018/05/12/openstackin-kayttoonotto/
 published: true
+post_date: 2018-05-12 11:39:23
 ---
-
 # OpenStack-pohjainen pilvitallennusratkaisu
 **Projektimme on osa Haaga-Helian Pilviteknologiat-kurssia keväällä 2018**
 
