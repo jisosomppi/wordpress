@@ -10,3 +10,5 @@ layout: post_type_probably_post
 published: true_or_false
 ---
 ```
+
+The plugin then uploads the post to my blog, and updates the frontmatter of the file on GitHub with more precise details (post date, author, ID etc.).
