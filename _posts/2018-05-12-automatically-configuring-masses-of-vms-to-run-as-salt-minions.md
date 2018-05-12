@@ -14,7 +14,7 @@ post_date: 2018-05-12 10:12:16
 # manymachines
 An attempt to take over the world with numerous salt minions
 
-Main repository available at: https://github.com/jisosomppi/mgmt
+Main repository available at: [https://github.com/jisosomppi/mgmt](https://github.com/jisosomppi/mgmt)
 
 
 ## Usage
@@ -39,7 +39,7 @@ rm -rf VirtualBox VMs/
 
 ```
 
-_Above URL is just an easily memorable version of https://raw.githubusercontent.com/jisosomppi/manymachines/master/deadsea.sh_
+_Above URL is just an easily memorable version of [https://raw.githubusercontent.com/jisosomppi/manymachines/master/deadsea.sh](https://raw.githubusercontent.com/jisosomppi/manymachines/master/deadsea.sh)
 
 The above script: 
 * clones this repository
