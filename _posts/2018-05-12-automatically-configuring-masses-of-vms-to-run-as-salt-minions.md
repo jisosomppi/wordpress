@@ -1,9 +1,16 @@
 ---
-post_title: 'Automatically configuring masses of VMs to run as Salt minions'
+ID: 471
+post_title: >
+  Automatically configuring masses of VMs
+  to run as Salt minions
+author: jussi
+post_excerpt: ""
 layout: post
+permalink: >
+  http://jisosomppi.me/2018/05/12/automatically-configuring-masses-of-vms-to-run-as-salt-minions/
 published: true
+post_date: 2018-05-12 10:12:16
 ---
-
 # manymachines
 An attempt to take over the world with numerous salt minions
 
@@ -27,7 +34,7 @@ vagrant box remove rdyslave
 cd
 rm -rf ~/vagrant/
 rm -rf ~/manymachines/
-rm -rf VirtualBox\ VMs/
+rm -rf VirtualBox VMs/
 
 
 ```
