@@ -17,6 +17,9 @@ post_date: 2018-05-12 09:52:00
 _This repository is a part of Haaga-Helia's Linux server management course, taught by Tero Karvinen. The course aims to teach students the proper use of centralized management, as well as the use of version control tools such as github.  
 More info at [Tero Karvinen's home page.](http://terokarvinen.com/2018/aikataulu-%e2%80%93-palvelinten-hallinta-ict4tn022-4-ti-5-ke-5-loppukevat-2018-5p)_
 
+Vastasin myös kurssilla esitettyyn haasteeseen: "Kuka saa eniten minioneita kerralla hallintaan?"  
+[Omalla kohdallani lopputulos oli **2071 minionia** kerralla hallinnassa.](https://github.com/jisosomppi/manymachines)
+
 ## Yleistä reposta
 
 ### Skriptit
@@ -46,7 +49,7 @@ Tämän jälkeen testasin toimivuutta ajamalla komennon `sudo salt '*' cmd.run '
 Kansion `/srv/salt` sisältö on seuraava:
 ``` yaml
 jussi@conman-VM:/srv/salt$ tail -n +1 *
-==&gt; basicapps.sls &lt;==
+==> basicapps.sls <==
 basic_apps:
   pkg.installed:
     - pkgs:
@@ -54,19 +57,19 @@ basic_apps:
       - tree
       - git
 
-==&gt; hello.sls &lt;==
+==> hello.sls <==
 /tmp/helloworld.txt:
   file.managed:
     - source: salt://helloworld.txt
 
-==&gt; helloworld.txt &lt;==
+==> helloworld.txt <==
 Hello salty world!
 
 // Created by salt-master
 
-==&gt; top.sls &lt;==
+==> top.sls <==
 base:
-  &#039;*&#039;:
+  '*':
     - hello
     - basicapps
 ```
@@ -81,11 +84,11 @@ Lainasin Jori Laineen [LAMP-tilaa](https://github.com/joonaleppalahti/CCM/blob/m
 ### H1e)
 Komennolla `sudo salt '*' grains.item virtual` sain tarkistettua, että virtuaalikoneeni on virtuaalinen:
 ```
-jussi@conman-VM:/srv/salt$ sudo salt &#039;*&#039; grains.item virtual
-[WARNING ] Key &#039;file_ignore_glob&#039; with value None has an invalid type of NoneType, a list is required for this value
-[WARNING ] Key &#039;file_ignore_glob&#039; with value None has an invalid type of NoneType, a list is required for this value
-[WARNING ] Key &#039;file_ignore_glob&#039; with value None has an invalid type of NoneType, a list is required for this value
-[WARNING ] Key &#039;file_ignore_glob&#039; with value None has an invalid type of NoneType, a list is required for this value
+jussi@conman-VM:/srv/salt$ sudo salt '*' grains.item virtual
+[WARNING ] Key 'file_ignore_glob' with value None has an invalid type of NoneType, a list is required for this value
+[WARNING ] Key 'file_ignore_glob' with value None has an invalid type of NoneType, a list is required for this value
+[WARNING ] Key 'file_ignore_glob' with value None has an invalid type of NoneType, a list is required for this value
+[WARNING ] Key 'file_ignore_glob' with value None has an invalid type of NoneType, a list is required for this value
 conman-VM:
     ----------
     virtual:
@@ -243,7 +246,7 @@ Jonka jälkeen tarkistin tilan toimineen toivotusti:
 Tein for in -silmukan, joka tekee `/tmp`-kansioon alikansion ja kolme testitiedostoa:
 
 ``` python
-{% for testfile in [&#039;testone.txt&#039;, &#039;testtwo.txt&#039;, &#039;testthree.txt&#039;] %}
+{% for testfile in ['testone.txt', 'testtwo.txt', 'testthree.txt'] %}
 
 /tmp/loop/{{ testfile }}:
   file.managed:
@@ -340,3 +343,28 @@ Ohjaa Saltin oikeaan kansioon, ja ajaa top.sls -tilaan määritetyt komennot.
 >b) Kokeile moduliasi tyhjässä koneessa. Voit käyttää virtualboxia, vagranttia tai livetikkua.
 >
 >c) Käyttäjätarina (user story): ketkä ovat modulisi käyttäjät? Mitä he haluavat saada aikaan modulillasi? Missä tilanteessa he sitä käyttävät? Mitkä ovat tärkeimmät parannukset käyttäjän kannalta, joita moduliin pitäisi vielä tehdä? Tähän c-kohtaan vain sanallinen vastaus, tämä kohta ei poikkeuksellisesti edellytä testejä tietokoneella.
+
+### H6a)
+
+Samba-modulini tehtävänä olisi luoda toimiva tiedostopalvelin, johon saisi helposti yhteyden niin Linux- kuin Windows-koneillakin. Tarkoitus olisi myös määrittää palvelimelle sekä julkinen kansio, että tietyille käyttäjille rajattu kansio. Kaikki salaiset tiedot pyydetään pilarista.
+
+### H6c)
+
+Modulin on tarkoitus helpottaa samba-tiedostopalvelimen käyttöönottoa. Käyttäjiksi valikoituisivat varmasti lähinnä kotikäyttäjät, kiitos samban kyseenalaisen tietoturvan. 
+
+## Moduli
+
+Samba-palvelimen pystytys modulilla toimii seuraavasti:
+
+* Master-minion arkkitehtuurin pystytys
+* Salasanojen luominen komennolla `sudo salt '*' shadow.get_password Salasana_Tähän`
+* Salasanojen lisääminen pilariin
+* Masterin uudelleenkäynnistys (tai pilarin päivitys)
+* Tilan ajaminen minionille
+  *  enforce_password: False varmistaa, ettei salasanaa muuteta ensimmäisen ajon jälkeen (vaikka käyttäjä muuttaisi sen)
+* Samba-käyttäjien lisäys SSH-yhteyden kautta (salasanaa ei saa syötettyä komentoriviltä)
+  * Jatkossa käyttäjän salasanan vaihtaminen muuttaa automaattisesti myös Samba-salasanan
+
+Tämän jälkeen Samba-palvelimen jaetut kansiot voi mapata Windows-koneille suoraan lisäämällä verkkoasema (`\\server.ip.osoite\secret ja \\server.ip.osoite\public`). Secret-kansion voi lisätä ainoastaan käyttämällä secret-käyttäjäryhmään kuuluvan käyttäjätilin tietoja, Public-kansion taas voi lisätä kuka tahansa (ainakin Windowsilla on kuitenkin syötettävä _joku_ käyttäjänimi ja salasana).
+
+Linuxilla yhdistäminen tapahtuu `smbclient`ia käyttämällä, `sudo smbclient \\\\server.ip.osoite\\share_nimi -U käyttäjänimi tai käyttäjänimi%salasana`. Ubuntussa sharet voi mapata suoraan Windows-shareina "Connect to Server" -toimintoa käyttämällä.
