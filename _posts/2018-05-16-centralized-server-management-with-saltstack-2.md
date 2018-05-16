@@ -1,10 +1,16 @@
 ---
-post_title: Centralized server management with SaltStack
+ID: 502
+post_title: >
+  Centralized server management with
+  SaltStack
 author: jussi
+post_excerpt: ""
 layout: post
+permalink: >
+  https://jisosomppi.me/2018/05/16/centralized-server-management-with-saltstack-2/
 published: true
+post_date: 2018-05-16 18:47:06
 ---
-
 # Salt-based centralized configuration management
 **Jussi Isosomppi, 2018**
 
@@ -43,7 +49,7 @@ Tämän jälkeen testasin toimivuutta ajamalla komennon `sudo salt '*' cmd.run '
 Kansion `/srv/salt` sisältö on seuraava:
 ``` yaml
 jussi@conman-VM:/srv/salt$ tail -n +1 *
-==> basicapps.sls <==
+==&gt; basicapps.sls &lt;==
 basic_apps:
   pkg.installed:
     - pkgs:
@@ -51,19 +57,19 @@ basic_apps:
       - tree
       - git
 
-==> hello.sls <==
+==&gt; hello.sls &lt;==
 /tmp/helloworld.txt:
   file.managed:
     - source: salt://helloworld.txt
 
-==> helloworld.txt <==
+==&gt; helloworld.txt &lt;==
 Hello salty world!
 
 // Created by salt-master
 
-==> top.sls <==
+==&gt; top.sls &lt;==
 base:
-  '*':
+  &#039;*&#039;:
     - hello
     - basicapps
 ```
@@ -78,11 +84,11 @@ Lainasin Jori Laineen [LAMP-tilaa](https://github.com/joonaleppalahti/CCM/blob/m
 ### H1e)
 Komennolla `sudo salt '*' grains.item virtual` sain tarkistettua, että virtuaalikoneeni on virtuaalinen:
 ```
-jussi@conman-VM:/srv/salt$ sudo salt '*' grains.item virtual
-[WARNING ] Key 'file_ignore_glob' with value None has an invalid type of NoneType, a list is required for this value
-[WARNING ] Key 'file_ignore_glob' with value None has an invalid type of NoneType, a list is required for this value
-[WARNING ] Key 'file_ignore_glob' with value None has an invalid type of NoneType, a list is required for this value
-[WARNING ] Key 'file_ignore_glob' with value None has an invalid type of NoneType, a list is required for this value
+jussi@conman-VM:/srv/salt$ sudo salt &#039;*&#039; grains.item virtual
+[WARNING ] Key &#039;file_ignore_glob&#039; with value None has an invalid type of NoneType, a list is required for this value
+[WARNING ] Key &#039;file_ignore_glob&#039; with value None has an invalid type of NoneType, a list is required for this value
+[WARNING ] Key &#039;file_ignore_glob&#039; with value None has an invalid type of NoneType, a list is required for this value
+[WARNING ] Key &#039;file_ignore_glob&#039; with value None has an invalid type of NoneType, a list is required for this value
 conman-VM:
     ----------
     virtual:
@@ -240,7 +246,7 @@ Jonka jälkeen tarkistin tilan toimineen toivotusti:
 Tein for in -silmukan, joka tekee `/tmp`-kansioon alikansion ja kolme testitiedostoa:
 
 ``` python
-{% for testfile in ['testone.txt', 'testtwo.txt', 'testthree.txt'] %}
+{% for testfile in [&#039;testone.txt&#039;, &#039;testtwo.txt&#039;, &#039;testthree.txt&#039;] %}
 
 /tmp/loop/{{ testfile }}:
   file.managed:
@@ -359,6 +365,6 @@ Samba-palvelimen pystytys modulilla toimii seuraavasti:
 * Samba-käyttäjien lisäys SSH-yhteyden kautta (salasanaa ei saa syötettyä komentoriviltä)
   * Jatkossa käyttäjän salasanan vaihtaminen muuttaa automaattisesti myös Samba-salasanan
 
-Tämän jälkeen Samba-palvelimen jaetut kansiot voi mapata Windows-koneille suoraan lisäämällä verkkoasema (`\\server.ip.osoite\secret ja \\server.ip.osoite\public`). Secret-kansion voi lisätä ainoastaan käyttämällä secret-käyttäjäryhmään kuuluvan käyttäjätilin tietoja, Public-kansion taas voi lisätä kuka tahansa (ainakin Windowsilla on kuitenkin syötettävä _joku_ käyttäjänimi ja salasana).
+Tämän jälkeen Samba-palvelimen jaetut kansiot voi mapata Windows-koneille suoraan lisäämällä verkkoasema (`\server.ip.osoitesecret ja \server.ip.osoitepublic`). Secret-kansion voi lisätä ainoastaan käyttämällä secret-käyttäjäryhmään kuuluvan käyttäjätilin tietoja, Public-kansion taas voi lisätä kuka tahansa (ainakin Windowsilla on kuitenkin syötettävä _joku_ käyttäjänimi ja salasana).
 
-Linuxilla yhdistäminen tapahtuu `smbclient`ia käyttämällä, `sudo smbclient \\\\server.ip.osoite\\share_nimi -U käyttäjänimi tai käyttäjänimi%salasana`. Ubuntussa sharet voi mapata suoraan Windows-shareina "Connect to Server" -toimintoa käyttämällä.
+Linuxilla yhdistäminen tapahtuu `smbclient`ia käyttämällä, `sudo smbclient \\server.ip.osoite\share_nimi -U käyttäjänimi tai käyttäjänimi%salasana`. Ubuntussa sharet voi mapata suoraan Windows-shareina "Connect to Server" -toimintoa käyttämällä.
